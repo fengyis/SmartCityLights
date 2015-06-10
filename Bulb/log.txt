@@ -1,0 +1,7 @@
+[<socket._socketobject object at 0x7fdcf2429d00>, <socket._socketobject object at 0x7fdcf2429d70>, <socket._socketobject object at 0x7fdcf2429de0>]
+Intensity is None <type 'NoneType'>
+Intensity is None <type 'NoneType'>
+Intensity is None <type 'NoneType'>
+Intensity is None <type 'NoneType'>
+Intensity is None <type 'NoneType'>
+Intensity is None <type 'NoneType'>

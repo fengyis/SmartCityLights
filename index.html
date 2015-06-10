@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Smart City Lights</title>
+    <!-- TECHNICAL GUIDE STEP : SCRIPT MANDATORY HEADERS-->
+    <!-- Bootstrap - Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+    <!-- Bootstrap - Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+    <!-- Bootstrap - Latest compiled and minified JavaScript -->
+    <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.3.5.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Lobster|Open+Sans|Lobster+Two|Inconsolata' rel='stylesheet' type='text/css'>
+    <script>
+// !! TECHNICAL GUIDE STEP : PARSE INITIALIZATION AND OBJECT CREATION !!
+Parse.initialize("kayWALfBm6h1SQdANXoZtTZqA0N9sZsB7cwUUVod", "1FtYiQ1p6n6QlUFXorwlM078O2BW2TJ7Vlv17jaW");
+
+// !! TECHNICAL GUIDE STEP : UPDATE OBJECT (PUT)!!
+function updateIntensity(form) {
+  var newIntensity = Number(form.inputbox.value);
+  var Bulb = Parse.Object.extend("Bulb");
+  var bulb = new Bulb()
+  bulb.set("objectId", "muHzstKOYg");
+  bulb.save(null, {
+    success: function(bulb) {
+      bulb.set("Intensity", newIntensity);
+      bulb.save();
+      alert("Update Success, New Intensity = " + newIntensity);
+    }
+  });
+}
+
+// !! TECHNICAL GUIDE STEP : RETRIEVE OBJECT (GET)!!
+function getInfo() {
+  var Bulb = Parse.Object.extend("Bulb");
+  var query = new Parse.Query(Bulb);
+  var bulb = new Bulb();
+  query.get("muHzstKOYg", {
+    success: function(bulb) {
+      var intensity = bulb.get("Intensity");
+      var health = bulb.get("Health");
+      var hour = bulb.get("Hour");
+      var min = bulb.get("Minute");
+      var city = bulb.get("City");
+      var weather = bulb.get("Weather");
+      var time = "";
+
+      // Update Bulb Intensity
+      document.getElementById("intensity").innerHTML = bulb.get("Intensity");
+
+      // Update Bulb Health
+      if (health == 0)
+        document.getElementById("health").innerHTML = "GOOD";
+      else if (health == 1)
+        document.getElementById("health").innerHTML = "POOR";
+      else if (health == 2)
+        document.getElementById("health").innerHTML = "DAMAGED";
+
+      // Update Local Time
+      if (hour >= 0 && hour <=9)
+      {
+        time = time.concat("0");
+        time = time.concat(hour);
+      }
+      else
+        time = time.concat(hour);
+      time = time.concat(":");
+      if (min >=0 && min <= 9)
+      {
+        time = time.concat("0");
+        time = time.concat(min);
+      }
+      else
+        time = time.concat(min);
+      document.getElementById("time").innerHTML = time;
+
+      // Update City and Weather
+      document.getElementById("weather").innerHTML = weather;
+      document.getElementById("city").innerHTML = city;
+
+
+    },
+    error: function(object, error) {
+      // The object was not retrieved successfully.
+      // error is a Parse.Error with an error code and message.
+    }
+  });
+}
+
+// !! TECHNICAL GUIDE STEP : PUSH NOTIFICATION!!
+// NOTE: Client Side Push needs to be enabled in Application Dashboard Settings!
+function pushHealthNotification(form) {
+  var newHealth = String(form.inputbox.value);
+  Parse.Push.send({
+    channels: ["Health"],
+    data: {
+      "Health":newHealth
+    }
+  }, 
+  {
+    success: function() {
+      alert("Push Successful! New HEALTH = " + newHealth);
+    },
+    error: function(error) {
+      // The object was not retrieved successfully.
+      // error is a Parse.Error with an error code and message.
+      alert("Error" + error);
+    }
+  });
+}
+
+</script>
+  <!-- TECHNICAL GUIDE STEP : BASIC CSS-->
+  <!-- TECHNICAL GUIDE STEP : BASIC HTML-->
+  <style>
+    body {
+        /*border: 20px solid #558C89;*/sm
+    }
+    h1 {
+      font-family: "Lobster"; 
+    }
+    h2 {
+      font-family: "Lobster"; 
+    }
+    h3 {
+      font-family: "Lobster"; 
+    }
+    h4 {
+      font-family: "Lobster"; 
+    }
+    .row {
+      font-family: "Inconsolata";
+      font-weight: bold;
+      font-size: medium;
+      color: black;
+    }
+    p {
+      color: black;
+      font-size: large;
+      font-family: "Inconsolata";
+      font-weight: bold;
+    }
+    .nav-pills li a{
+      color: black;
+      font-size: large;
+    }
+    .nav-pills li a:hover {
+      background-color: #74AFAD;
+    }
+    .nav-pills li.active a:hover {
+      background-color: #74AFAD;
+      color: black;
+    }
+    .nav-pills li.active #own-nav{
+      color: black;
+      background-color: #74AFAD;
+
+    }
+    #own-button {
+      background-color: #D9853B;
+      color: black;
+      font-weight: bold;
+      font-size: medium;
+    }
+    #heading{
+      /*background-color: #74AFAD;
+      color: black; */
+      font-weight: bold;
+      border-radius: 10px;
+      border-style: solid;
+      border-color: #D9853B;
+      background-color: #74AFAD;
+    }
+  </style>
+  <body>
+    <div class="container">
+      <div class="row" >
+        <div class="text-center" id="heading">
+          <h1>Columbia University Internet Of Things Project - Smart City Lights</h1>
+        </div>
+      </div>
+      <div class="row">
+        <br>
+        <div id="own-nav-bar">
+        <div class="col-md-offset-4 col-md-5">
+        <ul id="myTab" class="nav nav-pills">
+          <li class="active"><a href="#home" data-toggle="tab" id="own-nav">Home <span class="glyphicon glyphicon-home"></span></a></li>
+          <li><a href="#about" data-toggle="tab" id="own-nav">About</a></li>
+          <li><a href="#project" data-toggle="tab" id="own-nav">Project</a></li>
+          <li><a href="#contact" data-toggle="tab" id="own-nav">Contact <span class="glyphicon glyphicon-envelope"></span></a></li>
+        </ul>
+        </div>
+        </div>
+      </div>
+      <div id="myTabContent" class="tab-content">
+        <div class="text-center tab-pane fade in active" id="home">
+          <br><br>
+          <div class="row">
+            <br><br>
+            <div class ="col-md-12">
+            <p>Advanced Project - Electrical Engineering<br><br>
+
+Our goal is to monitor and control a light bulb from the Internet. The light bulb can be treated as a street lamp / light that can be controlled by any third party through the cloud. Additionally, we also detect the number of people near the light bulb through Broadcom's WICED Sense sensor. The WICED Sense communicates through Bluetooth Low Energy and informs the cloud about details such as temperature, pressure, etc.
+
+Through these measurements, we can dynamically vary the intensity of the light bulb and read information from it into the cloud. The information is displayed to the end user through a web site. [<a href="http://smartcitylights.parseapp.com/">http://smartcitylights.parseapp.com/</a>]
+            </p>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="about">
+          </div>
+        <div class="tab-pane fade" id="project">
+    </div>
+    <div class="tab-pane fade" id="contact">
+
+    </div>
+      </div> 
+    </div>
+  </body>
+</html>

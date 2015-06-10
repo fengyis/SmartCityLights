@@ -1,0 +1,19 @@
+SAMPLE PUSH NOTIFICATIONS FROM PARSE:
+
+'{"data":{"Health":"GOOD"},"time":"2015-04-15T23:02:14.6Z"}'
+'{"data":{"Health":"DAMAGED"},"time":"2015-04-15T23:02:14.6Z"}'
+'{"data":{"Health":"POOR"},"time":"2015-04-15T23:02:14.6Z"}'
+
+Constructing the REST Request using CURL:
+
+curl -X POST \
+  -H "X-Parse-Application-Id: kayWALfBm6h1SQdANXoZtTZqA0N9sZsB7cwUUVod" \
+  -H "X-Parse-REST-API-Key: pCtDSSXbhSuufcTpLz4a9Xfr2C5ImRfSyWQESBYH" \
+  -H "Content-Type: application/json" \
+  -d '{
+        "channels": ["Health"],
+        "data": {
+          "Health": "GOOD"
+        }
+      }' \
+  https://api.parse.com/1/push
