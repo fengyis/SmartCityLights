@@ -53,8 +53,8 @@ if __name__=="__main__":
 			continue
 
 		# Obtain sunset and sunrise times
-		sunsetTime = time.ctime(contentJson["sys"]["sunset"]).split(" ")[4]
-		sunriseTime = time.ctime(contentJson["sys"]["sunrise"]).split(" ")[4]
+		sunsetTime = time.ctime(contentJson["sys"]["sunset"]).split(" ")[3]
+		sunriseTime = time.ctime(contentJson["sys"]["sunrise"]).split(" ")[3]
 		localInfoText = contentJson["name"] + "\n" + contentJson["sys"]["country"] + "\n" + contentJson["weather"][0]["main"] + "\n" + contentJson["weather"][0]["description"] + "\n"
 		weatherText = contentJson["weather"][0]["main"] + "\n" + sunriseTime + "\n" + sunsetTime + "\n"
 		#print("weather:: Weather from weather.py is "+weatherText);
