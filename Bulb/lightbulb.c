@@ -33,7 +33,7 @@ char *healthList[] = {"GOOD" ,"POOR","DAMAGED"};
 
 // This is lock needed to ensure proper synchronization while updating some data of lightBulb struct
 pthread_mutex_t lock;
-char dataUUID[] = "bc946c14-758a-4448-8b78-69b04ba1bb8b"; /** Please update this value **/
+char dataUUID[] = "bc946c15-758a-4448-8b78-69b04ba1bb8b"; /** Please update this value **/
 struct lightBulb bulb;
 
 // Struct holding intensity / health values for light bulb
@@ -156,16 +156,26 @@ int getIntensity(struct lightBulb *bulb)
 // Function updates bulb intensity. Varies based on climate.
 void updateIntensity(int newIntensity, char *climate)
 {
+printf("climeate is %s/n", climate); 
+if (climate != NULL && bulb.health != 2)
+    {   
+        if (strcmp(climate, climateList[0]) == 0) //Cloud
+        {
+            if (bulb.health == 0) //GOOD
+            {
+                newIntensity++;
+                printf("lightbulb::updateIntensity() increment Intensity");
+            }            
+        }
+        if (strcmp(climate, climateList[2]) == 0)//rain
+        {
+            if (bulb.health == 0)//GOOD
+            {
+                newIntensity+=2;
+            }
+        }
+    }
 
-   if(strcmp(climateList[0],climate)==0){
-   	//Cloudy
-
-   }
-   if(strcmp(climateList[2],climate)==0){
-   	//rain
-
-   }
-    
 
      //printf("lightbulb::updateIntensity() Bulb health is %d \n", bulb.health );
      bulb.intensity = newIntensity;
@@ -293,32 +303,28 @@ void updateBasedOnTime(struct timeEmulate *bulbTime, int level[10], int servSock
     int sunsetHour=extractHour(weatherFile);
   
 	if (bulbTime->hour >= 0 && bulbTime->hour < sunriseHour)
-	{
-		updateIntensity(level[7], climate); 
-	}
-	if (bulbTime->hour >= sunriseHour && bulbTime->hour < 9)
-	{
-		updateIntensity(level[2], climate);
-	}
-	if (bulbTime->hour >= 9 && bulbTime->hour <12)
-	{
-		updateIntensity(0, climate);
-	}
-	if (bulbTime->hour >= (sunsetHour-1) && bulbTime->hour < sunsetHour)
-	{
-		updateIntensity(level[1], climate);
-	}
-
-	if (bulbTime->hour >= sunsetHour && bulbTime->hour < 20)
-	{
-		updateIntensity(level[4], climate);
-	}
-	if (bulbTime->hour >= 20)
-	{
-		updateIntensity(level[7], climate);
-	}
+    {
+        updateIntensity(level[7], climate); 
+    }
+    if (bulbTime->hour >= sunriseHour && bulbTime->hour < sunriseHour+2)
+    {
+        updateIntensity(level[1], climate);
+    }
+    if (bulbTime->hour >= sunriseHour+2 && bulbTime->hour < sunsetHour)
+    {
+        updateIntensity(0, climate);
+    }
+    if (bulbTime->hour >= sunsetHour && bulbTime->hour < sunsetHour+2)
+    {
+        updateIntensity(level[5], climate);
+    }
+    if (bulbTime->hour >= sunsetHour+2)
+    {
+        updateIntensity(level[7], climate);
+    }
 	
     close(weatherFile);
+    //free(climate);
     printf("lightbulb::updateBasedOnTime() Climate is %s \n",climate);
     printf("lightbulb::updateBasedOnTime() Hour is %d \n",sunriseHour);
 
