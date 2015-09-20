@@ -1,6 +1,6 @@
 # SmartCityLights 
 
-##[Visit our website!] fengyicitylight.parseapp.com
+##[Visit our website!] (fengyicitylight.parseapp.com)
 
 ###Our goal is to monitor and control a light bulb from the Internet.
 
