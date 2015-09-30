@@ -15,3 +15,7 @@ The bulb's logic is programmed in C (~/Bulb/bulbemulate.py)
 The bulb's GUI is programmed in Python (~/Bulb/bulbemulate.py)
 The weather information to adjust bulb is pulled from http://openweathermap.org/, programmed in python (~/Bulb/weather.py)
 These three programs are tied together through Inter Process Communication using sockets. Each program communicated with the other on a specific socket port as the system architecture figure shown above. Run the bulbemulate.py, and it calls for other two program weather.py and lightbulb.c.
+
+####Run Program
+cd Bulb
+python bulbemulate.py
